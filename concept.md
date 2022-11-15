@@ -1,7 +1,10 @@
 # Hoofball
 The goals will be two invisible walls. The ball will be detected on collision and sent the reset message.\
 Message will have form `GOAL [0/1]` and sent directly to the ball. 0 is team one and 1 is team 2.\
-Upon receiving the goal message the ball will reset in a "inert" state (phantom, non physical, non responsive to "goal") and will levitate above the middle of the field waiting to be reset by an active command.
+Upon receiving the goal message the ball will reset in a "inert" state (phantom, non physical, non responsive to "goal") and will levitate above the middle of the field waiting to be reset by an active command.\
+As per request The ball will reset near the losing goal by default. It will reset normally if stopped by referee.\
+A Button should let the ball reset.\
+A Scoreboard should count the points.
 
 # Protocols
 
@@ -25,10 +28,17 @@ Stop | The ball reset to inert | `HOOF STOP` | 1
   - [X] "Aball" description
   - [X] Physical
   - [X] listener on 1 and -155875
-  - [ ] particle / sound on goal ?
+  - [X] particle / sound on goal ?
   - [ ] (Color terrain dependant ?)
-  - [X] Buckability
+  - [X] Buckability + kickability
+  - [ ] Retransmits goal
 
 
 # Goal
 - [X] Send goal on collision if correct description
+
+# Scoreboard
+  - [ ] Numbers Mesh
+  - [ ] Listen for ball broadcast
+  - [ ] Touch Dialog for stuff
+  - [ ] Reset game/ball button.
