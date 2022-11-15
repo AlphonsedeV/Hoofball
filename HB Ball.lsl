@@ -3,6 +3,7 @@
 /////////////////////////////////////////////////
 
 vector Dpos;
+vector Rpos;
 key REFEREE = NULL_KEY; //PUT THE REFEREE KEY HERE
 float epsilon=2;
 
@@ -55,6 +56,7 @@ default
         vector scale = llGetScale();
         epsilon = scale.x/2*epsilon;
         Dpos = llGetPos();
+        Rpos = Dpos;
         state inert;
     }
 }
@@ -136,6 +138,11 @@ state active
             isgoal = TRUE;
             if (msg == "GOAL 0")  llShout(0,"Team 1 Scores !");
             else  llShout(0,"Team 2 Scores !");
+            list goalattr = llGetObjectDetails(id,[OBJECT_POS,OBJECT_ROT]);
+            vector goalpos = llList2Vector(goalattr,0);
+            vector fwd = <0,0,-1>*llList2Rot(goalattr,1);
+            fwd = llVecNorm(<fwd.x,fwd.y,0>);
+            Dpos =  goalpos+fwd*10+<0,0,2>;
             
             state inert;
         }
@@ -153,11 +160,13 @@ state active
             llTriggerSound("3c3ab527-c40d-df29-55fe-d3d48c387a62", 1);
             llTriggerSound("3c3ab527-c40d-df29-55fe-d3d48c387a62", 1);
             llSleep(1);
-            llMoveToTarget(a, 6);
+            llMoveToTarget(a, 5);
             llSleep(3);
             llStopMoveToTarget();
+            
         }
-        else llShout(0,"Ball Stopped by referee");
+        else 
+        {llShout(0,"Ball Stopped by referee");Dpos=Rpos;}
 
     }
 }
