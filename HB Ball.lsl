@@ -70,6 +70,7 @@ state inert
         llSetPrimitiveParams(NonPhy);
         llSetRegionPos(Dpos);
         llListen(1, "", REFEREE, "HOOF START");
+        llListen(1,"",REFEREE,"HOOF STOP");
     }
 
     touch_start( integer _ )
@@ -80,7 +81,8 @@ state inert
 
     listen( integer chan, string _, key __, string msg )
     {
-        state active;
+        if (msg == "HOOF STOP") llSetRegionPos(Rpos);
+        else state active;
     }
 }
 

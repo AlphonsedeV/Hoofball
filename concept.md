@@ -31,7 +31,7 @@ Stop | The ball reset to inert | `HOOF STOP` | 1
   - [X] particle / sound on goal ?
   - [ ] (Color terrain dependant ?)
   - [X] Buckability + kickability
-  - [ ] Retransmits goal
+  - [X] Retransmits goal
 
 
 # Goal
@@ -39,6 +39,6 @@ Stop | The ball reset to inert | `HOOF STOP` | 1
 
 # Scoreboard
   - [ ] Numbers Mesh
-  - [ ] Listen for ball broadcast
-  - [ ] Touch Dialog for stuff
-  - [ ] Reset game/ball button.
+  - [X] Listen for ball broadcast
+  - [X] Touch Dialog for stuff
+  - [X] Reset game/ball button.
