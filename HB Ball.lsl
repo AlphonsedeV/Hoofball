@@ -136,8 +136,10 @@ state active
         else
         {
             isgoal = TRUE;
-            if (msg == "GOAL 0")  llShout(0,"Team 1 Scores !");
-            else  llShout(0,"Team 2 Scores !");
+            if (msg == "GOAL 0")  
+            {llShout(0,"Team 1 Scores !");llShout(-15587,"GOAL 0");}
+            else  
+            {llShout(0,"Team 2 Scores !");llShout(-15587,"GOAL 1");}
             list goalattr = llGetObjectDetails(id,[OBJECT_POS,OBJECT_ROT]);
             vector goalpos = llList2Vector(goalattr,0);
             vector fwd = <0,0,-1>*llList2Rot(goalattr,1);
