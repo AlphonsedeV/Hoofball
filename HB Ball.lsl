@@ -102,6 +102,9 @@ state active
         {
             llSetObjectDesc("Iball");
             vector a = llGetPos();
+            llTriggerSound("3c3ab527-c40d-df29-55fe-d3d48c387a62", 1);
+            llTriggerSound("3c3ab527-c40d-df29-55fe-d3d48c387a62", 1);
+            llTriggerSound("3c3ab527-c40d-df29-55fe-d3d48c387a62", 1);
             llSleep(1);
             llMoveToTarget(a, 6);
             //Do particle/Sound stuff.
