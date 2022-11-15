@@ -15,19 +15,19 @@ Stop | The ball reset to inert | `HOOF STOP` | 1
 
 # Ball
 - [ ] inert state
-  - [ ] "Iball" description
-  - [ ] listener on 1
-  - [ ] nonphysical property
-  - [ ] tp to reset point
+  - [X] "Iball" description
+  - [X] listener on 1
+  - [X] nonphysical property
+  - [X] tp to reset point
   - [ ] (Rotate / Musicloop ?)
   - [ ] Clickable with dialog
 - [ ] active state
-  - [ ] "Aball" description
-  - [ ] Physical
-  - [ ] listener on 1 and -155875
+  - [X] "Aball" description
+  - [X] Physical
+  - [X] listener on 1 and -155875
   - [ ] particle / sound on goal ?
   - [ ] (Color terrain dependant ?)
 
 
 # Goal
-- [ ] Send goal on collision if correct description
+- [X] Send goal on collision if correct description
