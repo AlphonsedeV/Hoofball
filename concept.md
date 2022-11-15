@@ -27,6 +27,7 @@ Stop | The ball reset to inert | `HOOF STOP` | 1
   - [X] listener on 1 and -155875
   - [ ] particle / sound on goal ?
   - [ ] (Color terrain dependant ?)
+  - [X] Buckability
 
 
 # Goal
