@@ -19,8 +19,12 @@ integer Team2 = FALSE;
 
 default
 {
+    state_entry()
+    {
+        llVolumeDetect(TRUE);
+    }
 
-    collision_end( integer _ )
+    collision_start( integer _ )
     {
         if (!(llDetectedType(0) & 10))  return;
         key target = llDetectedKey(0);

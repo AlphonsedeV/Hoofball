@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////
 
 vector Dpos;
-key REFEREE = NULL_KEY; //PUT THE REFEREE KEY HERE
+key REFEREE = "f3fb943d-20d8-48dd-9413-c1ab046ea8a8"; //PUT THE REFEREE KEY HERE
 
 
 integer isgoal = FALSE;
@@ -77,8 +77,8 @@ state active
         else
         {
             isgoal = TRUE;
-            if (msg == "GOAL 0")  llShout("Team 1 Scores !");
-            else  llShout("Team 2 Scores !");
+            if (msg == "GOAL 0")  llShout(0,"Team 1 Scores !");
+            else  llShout(0,"Team 2 Scores !");
             
             state inert;
         }
@@ -88,8 +88,10 @@ state active
     {
         if (isgoal)
         {
+            llSetObjectDesc("Iball");
             //Do particle/Sound stuff.
+            llSleep(3);
         }
-        else llShout("Ball Stopped by referee");
+        else llShout(0,"Ball Stopped by referee");
     }
 }
