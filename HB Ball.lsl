@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////
 
 vector Dpos;
-key REFEREE = "f3fb943d-20d8-48dd-9413-c1ab046ea8a8"; //PUT THE REFEREE KEY HERE
+key REFEREE = NULL_KEY; //PUT THE REFEREE KEY HERE
 float epsilon=2;
 
 integer isgoal = FALSE;
@@ -72,6 +72,7 @@ state inert
 
     touch_start( integer _ )
     {
+        if (REFEREE == NULL_KEY) state active;
         if (llDetectedKey(0) == REFEREE) state active;
     }
 
