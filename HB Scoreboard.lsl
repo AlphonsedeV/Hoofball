@@ -49,6 +49,7 @@ default
         {
             if (msg == "GOAL 0") T1++;
             else T2++;
+            UpdateScoreHover();
         }
 
         else if (chan == DChan)
