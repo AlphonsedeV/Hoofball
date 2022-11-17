@@ -7,6 +7,7 @@ vector Rpos;
 key REFEREE = NULL_KEY; //PUT THE REFEREE KEY HERE
 float epsilon=2;
 integer NoSpam = FALSE;
+key lastkick = NULL_KEY;
 
 integer isgoal = FALSE;
 list NonPhy = [PRIM_PHANTOM,TRUE,PRIM_PHYSICS,FALSE];
@@ -134,6 +135,7 @@ state active
                 llApplyImpulse(llGetMass()*-BUCKFACT*(fwd+<0,0,-0.5>), FALSE);
                 llSetTimerEvent(0);
                 llSetTimerEvent(1);
+                lastkick = id;
             }
         }
         else if (chan == -563)
@@ -149,15 +151,16 @@ state active
                 llApplyImpulse(llGetMass()*KICKFACT*(fwd+<0,0,0.5>), FALSE);
                 llSetTimerEvent(0);
                 llSetTimerEvent(0.8);
+                lastkick = id;
             }
         }
         else
         {
             isgoal = TRUE;
             if (msg == "GOAL 0")  
-            {llShout(0,"Team 1 Scores !");llShout(-155875,"GOAL 0");}
+            {llShout(0,llGetDisplayName(lastkick) + " Scored for Team 1 !");llShout(-155875,"GOAL 0");}
             else  
-            {llShout(0,"Team 2 Scores !");llShout(-155875,"GOAL 1");}
+            {llShout(0,llGetDisplayName(lastkick) + " Scored for Team 2 !");llShout(-155875,"GOAL 1");}
             list goalattr = llGetObjectDetails(id,[OBJECT_POS,OBJECT_ROT]);
             vector goalpos = llList2Vector(goalattr,0);
             vector fwd = <0,0,-1>*llList2Rot(goalattr,1);
