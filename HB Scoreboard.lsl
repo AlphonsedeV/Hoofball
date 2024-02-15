@@ -40,7 +40,7 @@ default
     touch_start(integer _)
     {
         string msg = "Score is currently\n   Team 1 : " + (string)T1 + "\n   Team 2 : " + (string)T2;
-        llDialog(llDetectedKey(0), msg , ["T1 -","T2 -","Reset","T1 +","T2 +","X"], DChan);
+        llDialog(llDetectedKey(0), msg , ["T1 -","T2 -","Reset","T1 +","T2 +","Start"], DChan);
     }
 
     listen( integer chan, string _, key id, string msg )
@@ -58,6 +58,11 @@ default
             string Team = llList2String(split,0);
             if (Team == "Reset")
             {llShout(1,"HOOF STOP");llResetScript();}
+
+            else if (Team == "Start")
+            {
+                llShout(1,"HOOF START");
+            }
 
             else if (Team == "T1")
             {
