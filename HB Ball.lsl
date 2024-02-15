@@ -5,8 +5,8 @@
 vector Dpos;
 vector Rpos;
 key REFEREE = NULL_KEY; //PUT THE REFEREE KEY HERE
-float epsilon=2;
-integer NoSpam = FALSE;
+float epsilon=2; //distance check
+integer NoSpam = FALSE; //unused
 key lastkick = NULL_KEY;
 
 integer isgoal = FALSE;
@@ -78,18 +78,21 @@ state inert
         llSetObjectDesc("Iball");
         llSetPrimitiveParams(NonPhy);
         llSetRegionPos(Dpos);
-        llListen(1, "", REFEREE, "HOOF START");
-        llListen(1,"",REFEREE,"HOOF STOP");
+        llListen(1, "", NULL_KEY, "HOOF START");
+        llListen(1,"",NULL_KEY,"HOOF STOP");
     }
 
     touch_start( integer _ )
     {
         if (REFEREE == NULL_KEY) state active;
-        if (llDetectedKey(0) == REFEREE) state active;
+        if (llDetectedKey(0) == REFEREE || llDetectedKey(0) == REFEREE) state active;
     }
 
-    listen( integer chan, string _, key __, string msg )
+    listen( integer chan, string _, key id, string msg )
     {
+        if (!(id == REFEREE || llGetOwnerKey(id) == REFEREE || REFEREE == NULL_KEY))
+            return;
+
         if (msg == "HOOF STOP") llSetRegionPos(Rpos);
         else state active;
     }
@@ -102,7 +105,7 @@ state active
         NoSpam = FALSE;
         isgoal = FALSE;
         llSetObjectDesc("Aball");
-        llListen(1, "", REFEREE, "HOOF STOP");
+        llListen(1, "", NULL_KEY, "HOOF STOP");
         llListen(-155875,"",NULL_KEY,"GOAL 0");
         llListen(-155875,"",NULL_KEY,"GOAL 1");
         llListen(-19,"",NULL_KEY,"buck");
@@ -121,7 +124,9 @@ state active
 
     listen( integer chan, string _, key id, string msg )
     {
-        if (chan == 1)  state inert;
+        if (chan == 1 &&
+        (id == REFEREE || llGetOwnerKey(id) == REFEREE || REFEREE == NULL_KEY)
+        )  state inert;
         else if (chan == -19)
         {
             list attr = llGetObjectDetails(id,[OBJECT_POS,OBJECT_ROT]);
