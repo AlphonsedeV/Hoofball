@@ -43,12 +43,37 @@ list Goal = [
     PSYS_SRC_BURST_SPEED_MIN,   5
 ];
 
+//throttle management
+list th_list;
+float THROTTLE_S = 0.300; //testing required
+
 
 ///////////////////////////////////////////////////
 //                   FUNCTIONS                  //
 /////////////////////////////////////////////////
 
+updatethrottle()
+{
+    float mrfreeze = llGetTime();
+    float time = llList2Float(th_list, 0);
+    while (llGetListLength(th_list) && (mrfreeze - time < THROTTLE_S))
+    {
+        th_list = llDeleteSubList(th_list, 0, 1);
+        time = llList2Float(th_list, 0);
+    }
+}
 
+integer checkthrottle(key id)
+// 1 for ok, 0 for denied
+{
+    updatethrottle();
+    return llListFindList(th_list, [id]) == -1;
+}
+
+addthrottle(key id)
+{
+    th_list += [llGetTime(), id];
+}
 
 
 ///////////////////////////////////////////////////
@@ -120,10 +145,13 @@ state active
         llParticleSystem(Trail);
         llShout(0,"GO !");
         llSetTimerEvent(0.2);
+        llResetTime();
     }
 
     listen( integer chan, string _, key id, string msg )
     {
+        if (!checkthrottle(id)) return;
+
         if (chan == 1 &&
         (id == REFEREE || llGetOwnerKey(id) == REFEREE || REFEREE == NULL_KEY)
         )  state inert;
@@ -152,7 +180,10 @@ state active
 
             if (llVecDist(llGetPos(), posi+fwd) <= epsilon && !NoSpam)
             {
-                //NoSpam = TRUE;
+                //Throttle management
+                addthrottle(id);
+
+
                 llApplyImpulse(llGetMass()*KICKFACT*(fwd+<0,0,0.5>), FALSE);
                 llSetTimerEvent(0);
                 llSetTimerEvent(0.8);

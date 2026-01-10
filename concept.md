@@ -35,6 +35,7 @@ Stop | The ball reset to inert | `HOOF STOP` | 1
   - [ ] (Color terrain dependant ?)
   - [X] Buckability + kickability
   - [X] Retransmits goal
+  - [ ] Make throttle thing
 
 
 # Goal
