@@ -46,6 +46,7 @@ list Goal = [
 //throttle management
 list th_list;
 float THROTTLE_S = 0.300; //testing required
+integer THROTTLE_NB = 3; // testing required
 
 
 ///////////////////////////////////////////////////
@@ -67,7 +68,18 @@ integer checkthrottle(key id)
 // 1 for ok, 0 for denied
 {
     updatethrottle();
-    return llListFindList(th_list, [id]) == -1;
+    integer i = 0;
+    i = llListFindList(llList2List(th_list, i*2, -1), [id]);
+    integer count = 0;
+
+    while (i != -1
+         && i+1 < llGetListLength(th_list)
+         && count < THROTTLE_NB) 
+         {
+            i = llListFindList(llList2List(th_list, i+1, -1), [id]);
+            count++;
+         }
+    return count < THROTTLE_NB;
 }
 
 addthrottle(key id)
