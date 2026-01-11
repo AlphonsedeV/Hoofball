@@ -69,18 +69,17 @@ integer checkthrottle(key id)
 {
     updatethrottle();
     integer i = 0;
-    i = llListFindList(llList2List(th_list, i*2, -1), [id]);
+    i = llListFindList(llList2List(th_list, 0, -1), [id]);
     integer count = 0;
-
     while (i != -1
-         && i+1 < llGetListLength(th_list)
-         && count <= THROTTLE_NB) 
+         && i < llGetListLength(th_list)
+         && count < THROTTLE_NB) 
          {
-            i = llListFindList(llList2List(th_list, i+1, -1), [id]);
+            i = i + llListFindList(llList2List(th_list, i, -1), [id]) + 1;
             count++;
          }
-    //llOwnerSay("returning : " + (string)(count <= THROTTLE_NB));
-    return count <= THROTTLE_NB;
+    //llOwnerSay("returning : " + (string)(count < THROTTLE_NB));
+    return count < THROTTLE_NB;
 }
 
 addthrottle(key id)
@@ -159,6 +158,7 @@ state active
         llShout(0,"GO !");
         llSetTimerEvent(0.2);
         llResetTime();
+        th_list = [];
     }
 
     listen( integer chan, string _, key id, string msg )
@@ -197,7 +197,6 @@ state active
                 if (!checkthrottle(id)) return;
                 //Throttle management
                 addthrottle(id);
-
 
                 llApplyImpulse(llGetMass()*KICKFACT*(fwd+<0,0,0.5>), FALSE);
                 llSetTimerEvent(0);
