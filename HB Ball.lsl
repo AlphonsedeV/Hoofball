@@ -57,7 +57,7 @@ updatethrottle()
 {
     float mrfreeze = llGetTime();
     float time = llList2Float(th_list, 0);
-    while (llGetListLength(th_list) && (mrfreeze - time < THROTTLE_S))
+    while (llGetListLength(th_list) && (mrfreeze - time > THROTTLE_S))
     {
         th_list = llDeleteSubList(th_list, 0, 1);
         time = llList2Float(th_list, 0);
@@ -74,12 +74,13 @@ integer checkthrottle(key id)
 
     while (i != -1
          && i+1 < llGetListLength(th_list)
-         && count < THROTTLE_NB) 
+         && count <= THROTTLE_NB) 
          {
             i = llListFindList(llList2List(th_list, i+1, -1), [id]);
             count++;
          }
-    return count < THROTTLE_NB;
+    //llOwnerSay("returning : " + (string)(count <= THROTTLE_NB));
+    return count <= THROTTLE_NB;
 }
 
 addthrottle(key id)
@@ -162,13 +163,13 @@ state active
 
     listen( integer chan, string _, key id, string msg )
     {
-        if (!checkthrottle(id)) return;
-
+        
         if (chan == 1 &&
         (id == REFEREE || llGetOwnerKey(id) == REFEREE || REFEREE == NULL_KEY)
         )  state inert;
         else if (chan == -19)
         {
+            
             list attr = llGetObjectDetails(id,[OBJECT_POS,OBJECT_ROT]);
             vector posi = llList2Vector(attr, 0);
             vector fwd = llRot2Fwd(llList2Rot(attr, 1));
@@ -176,6 +177,7 @@ state active
 
             if (llVecDist(llGetPos(), posi-fwd) <= epsilon && !NoSpam)
             {
+                if (!checkthrottle(id)) return;
                 //NoSpam = TRUE;
                 llApplyImpulse(llGetMass()*-BUCKFACT*(fwd+<0,0,-0.5>), FALSE);
                 llSetTimerEvent(0);
@@ -192,6 +194,7 @@ state active
 
             if (llVecDist(llGetPos(), posi+fwd) <= epsilon && !NoSpam)
             {
+                if (!checkthrottle(id)) return;
                 //Throttle management
                 addthrottle(id);
 
