@@ -5,7 +5,7 @@
 vector Dpos;
 vector Rpos;
 key REFEREE = NULL_KEY; //PUT THE REFEREE KEY HERE
-float epsilon=2; //distance check
+float epsilon=3; //distance check
 integer NoSpam = FALSE; //unused
 key lastkick = NULL_KEY;
 
@@ -23,7 +23,7 @@ list Trail = [
     //PSYS_PART_FLAGS,            PSYS_PART_EMISSIVE_MASK | PSYS_PART_RIBBON_MASK,
     PSYS_SRC_PATTERN,           PSYS_SRC_PATTERN_DROP,
     PSYS_SRC_TEXTURE,           TEXTURE_BLANK,
-    PSYS_PART_START_ALPHA,      0.7,
+    PSYS_PART_START_ALPHA,      0.3,
     PSYS_SRC_MAX_AGE,           0,
     PSYS_PART_MAX_AGE,          3,
     PSYS_SRC_BURST_RATE,        0.03,
@@ -178,6 +178,11 @@ state active
             if (llVecDist(llGetPos(), posi-fwd) <= epsilon && !NoSpam)
             {
                 if (!checkthrottle(id)) return;
+                //Throttle management
+                addthrottle(id);
+                addthrottle(id);
+                addthrottle(id);
+            
                 //NoSpam = TRUE;
                 llApplyImpulse(llGetMass()*-BUCKFACT*(fwd+<0,0,-0.5>), FALSE);
                 llSetTimerEvent(0);
