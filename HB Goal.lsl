@@ -22,6 +22,10 @@ default
     state_entry()
     {
         llVolumeDetect(TRUE);
+        llSetMemoryLimit(llGetUsedMemory()+500)
+        //Roughly needs 100 memory per simultaneous ball scoring.
+        // eg at +500 it will crash if 6 balls score close enough to clog event memory
+        // Probably is more, an event stacked cost less memory than when actively treated.
     }
 
     collision_start( integer _ )

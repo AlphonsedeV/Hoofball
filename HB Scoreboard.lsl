@@ -35,6 +35,7 @@ default
         llListen(DChan,"",NULL_KEY,"");
         llListen(-155875,"",NULL_KEY,"");
         UpdateScoreHover();
+        llSetMemoryLimit(llGetUsedMemory()+5000) // no profiling I'm eyeballing that based on 2 free listens
     }
 
     touch_start(integer _)
