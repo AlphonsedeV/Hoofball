@@ -53,32 +53,27 @@ integer THROTTLE_NB = 3; // testing required
 //                   FUNCTIONS                  //
 /////////////////////////////////////////////////
 
-updatethrottle()
-{
-    float mrfreeze = llGetTime();
-    float time = llList2Float(th_list, 0);
-    while (llGetListLength(th_list) && (mrfreeze - time > THROTTLE_S))
-    {
-        th_list = llDeleteSubList(th_list, 0, 1);
-        time = llList2Float(th_list, 0);
-    }
-}
-
 integer checkthrottle(key id)
 // 1 for ok, 0 for denied
 {
-    updatethrottle();
-    integer i = 0;
-    i = llListFindList(llList2List(th_list, 0, -1), [id]);
-    integer count = 0;
-    while (i != -1
-         && i < llGetListLength(th_list)
-         && count < THROTTLE_NB) 
-         {
-            i = i + llListFindList(llList2List(th_list, i, -1), [id]) + 1;
-            count++;
-         }
-    //llOwnerSay("returning : " + (string)(count < THROTTLE_NB));
+    float mrfreeze = llGetTime();   
+    integer l = llGetListLength(th_list)/2;
+    integer i;
+    integer j; // cutting var
+    integer count;
+
+    while (i < l && count < THROTTLE_NB)
+    {
+        if (mrfreeze - llList2Float(th_list,i*2) > THROTTLE_S) j++;
+        //doing a lazy culling while looking for the caller
+        else 
+        {
+            if (llList2Key(th_list, i*2+1) == id) count++;
+        }
+    } 
+
+    th_list = llList2List(th_list, j, -1);
+
     return count < THROTTLE_NB;
 }
 
