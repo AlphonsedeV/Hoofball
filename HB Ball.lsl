@@ -47,6 +47,7 @@ list Goal = [
 list th_list;
 float THROTTLE_S = 0.300; //testing required
 integer THROTTLE_NB = 3; // testing required
+integer th_cull;
 
 
 ///////////////////////////////////////////////////
@@ -58,21 +59,21 @@ integer checkthrottle(key id)
 {
     float mrfreeze = llGetTime();   
     integer l = llGetListLength(th_list)/2;
-    integer i;
-    integer j; // cutting var
+    integer i = th_cull;
     integer count;
 
     while (i < l && count < THROTTLE_NB)
     {
-        if (mrfreeze - llList2Float(th_list,i*2) > THROTTLE_S) j++;
+        if (mrfreeze - llList2Float(th_list,i*2) > THROTTLE_S) th_cull++;
         //doing a lazy culling while looking for the caller
         else 
         {
             if (llList2Key(th_list, i*2+1) == id) count++;
         }
+        i++;
     } 
 
-    th_list = llList2List(th_list, j, -1);
+    //th_list = llList2List(th_list, j, -1);
 
     return count < THROTTLE_NB;
 }
@@ -256,6 +257,14 @@ state active
         if (llVecMag(speed) < SFRICTION*2 || (b.z - llGround(ZERO_VECTOR)) >= epsilon/1.7) return ;
         speed = llVecNorm(<speed.x,speed.y,0>);
         llApplyImpulse(m*speed*-SFRICTION,FALSE);
+
+        // culling throttle
+
+        if (th_cull > 0)
+        {
+            th_list = llList2List(th_list, th_cull, -1);
+            th_cull = 0;
+        }
     }
 }
 
